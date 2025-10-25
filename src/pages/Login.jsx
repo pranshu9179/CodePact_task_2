@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👈 toggle state
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -15,50 +15,52 @@ export default function Login() {
     const res = login(email, password);
     if (res.success) {
       if (res.role === "user") navigate("/user-dashboard");
-      else if (res.role === "delivery") navigate("/delivery-dashboard");
+      else navigate("/delivery-dashboard");
     } else {
       alert(res.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-sky-100 to-white">
-      <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-sm space-y-4">
-        <h2 className="text-center text-xl font-semibold text-sky-700">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-sky-100 to-white px-4">
+      <div className="bg-white p-6 rounded-3xl shadow-xl w-full max-w-sm space-y-4 animate-fadeIn">
+        <h2 className="text-center text-2xl font-bold text-sky-700">Login</h2>
 
         <Input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
+          className="border border-sky-200 rounded-lg px-3 h-10 focus:ring-2 focus:ring-sky-300 transition"
         />
 
         <div className="relative">
           <Input
-            type={showPassword ? "text" : "password"} // 👈 toggle type
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
+            className="border border-sky-200 rounded-lg px-3 h-10 focus:ring-2 focus:ring-sky-300 transition"
           />
           <span
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "🙈" : "👁️"} {/* Simple eye emoji */}
+            {showPassword ? "🙈" : "👁️"}
           </span>
         </div>
 
         <Button
           onClick={handleLogin}
-          className="w-full bg-sky-500 hover:bg-sky-600 text-white"
+          className="w-full bg-linear-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-300"
         >
           Login
         </Button>
 
-        <p className="text-center text-sm text-gray-500 mt-2">
+        <p className="text-center text-gray-500 text-sm">
           Not registered yet?{" "}
           <span
-            className="text-sky-500 hover:underline cursor-pointer"
+            className="text-sky-600 hover:underline cursor-pointer"
             onClick={() => navigate("/register")}
           >
             Register

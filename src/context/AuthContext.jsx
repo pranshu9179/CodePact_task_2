@@ -1,3 +1,4 @@
+
 import { createContext, useState, useContext, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -5,7 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // Load user from localStorage once
+  // Load user from localStorage on mount
   useEffect(() => {
     try {
       const savedUser = localStorage.getItem("user");
@@ -15,22 +16,28 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ login(email, password) returns success & role
+  // Login function
   const login = (email, password) => {
-    const registered = JSON.parse(localStorage.getItem("registeredUser"));
-    if (!registered) {
+    const registeredUsers = JSON.parse(
+      localStorage.getItem("registeredUsers") || "[]"
+    );
+    if (!registeredUsers.length)
       return { success: false, message: "No registered user found" };
-    }
 
-    if (registered.email === email && registered.password === password) {
-      setUser(registered);
-      localStorage.setItem("user", JSON.stringify(registered));
-      return { success: true, role: registered.role };
+    const foundUser = registeredUsers.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (foundUser) {
+      setUser(foundUser);
+      localStorage.setItem("user", JSON.stringify(foundUser));
+      return { success: true, role: foundUser.role };
     } else {
       return { success: false, message: "Invalid credentials" };
     }
   };
 
+  // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");

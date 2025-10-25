@@ -1,142 +1,99 @@
-// storage.js
+import data from "./data.json";
 
-const STORAGE_KEYS = {
-  USER: "user",
-  REGISTERED_USER: "registeredUser",
-  DELIVERIES: "deliveries",
-};
+// LocalStorage keys
+const KEY_AREAS = "milk_app_areas_v1";
+const KEY_COLONIES = "milk_app_colonies_v1";
+const KEY_USERS = "milk_app_users_v1";
 
-/**
- * Save data to localStorage
- * @param {string} key
- * @param {any} value
- */
-export const setItem = (key, value) => {
+function read(key, fallback) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error("Error saving to localStorage:", error);
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error("storage read error", e);
+    return fallback;
   }
-};
+}
 
-/**
- * Get data from localStorage
- * @param {string} key
- * @returns {any|null}
- */
-export const getItem = (key) => {
+function write(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Initialize localStorage with JSON data if not already stored
+(function init() {
+  if (!localStorage.getItem(KEY_AREAS)) write(KEY_AREAS, data.areas);
+  if (!localStorage.getItem(KEY_COLONIES)) write(KEY_COLONIES, data.colonies);
+  if (!localStorage.getItem(KEY_USERS)) write(KEY_USERS, data.users);
+})();
+
+// ===== Area and Colony =====
+export function getAreas() {
+  return read(KEY_AREAS, []);
+}
+
+export function getColoniesByArea(areaId) {
+  const cols = read(KEY_COLONIES, []);
+  return cols.filter((c) => c.areaId === areaId);
+}
+
+// ===== Users =====
+export function getUsersByColony(colonyId) {
+  const users = read(KEY_USERS, []);
+  return users.filter((u) => u.colonyId === colonyId);
+}
+
+export function getUserById(userId) {
+  const users = read(KEY_USERS, []);
+  return users.find((u) => u.id === userId) || null;
+}
+
+export function markDeliveredForUser(userId, dateStr = null) {
+  const users = read(KEY_USERS, []);
+  const idx = users.findIndex((u) => u.id === userId);
+  if (idx === -1) return null;
+  const d = dateStr || new Date().toISOString().slice(0, 10);
+  users[idx].deliveryLog = users[idx].deliveryLog || {};
+  users[idx].deliveryLog[d] = true;
+  write(KEY_USERS, users);
+  return users[idx];
+}
+
+export function toggleDeliveryForUser(userId, dateStr) {
+  const users = read(KEY_USERS, []);
+  const idx = users.findIndex((u) => u.id === userId);
+  if (idx === -1) return null;
+  users[idx].deliveryLog = users[idx].deliveryLog || {};
+  users[idx].deliveryLog[dateStr] = !users[idx].deliveryLog[dateStr];
+  write(KEY_USERS, users);
+  return users[idx];
+}
+
+export function updateUserQtyAndType(userId, newQty, newType) {
+  const users = read(KEY_USERS, []);
+  const idx = users.findIndex((u) => u.id === userId);
+  if (idx === -1) return null;
+  users[idx].qty = Number(newQty);
+  users[idx].milkType = newType;
+  write(KEY_USERS, users);
+  return users[idx];
+}
+
+// Optional: store user preferences
+export const getUser = () => {
   try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    const data = localStorage.getItem("userPreferences");
+    return data ? JSON.parse(data) : null;
   } catch (error) {
-    console.error("Error reading from localStorage:", error);
+    console.error("Error getting user preferences:", error);
     return null;
   }
 };
 
-/**
- * Remove an item from localStorage
- * @param {string} key
- */
-export const removeItem = (key) => {
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error("Error removing from localStorage:", error);
-  }
-};
-
-/* ===========================
-   User Management
-=========================== */
-
-/**
- * Save/update current logged in user
- * @param {object} userData
- */
 export const saveUser = (userData) => {
-  setItem(STORAGE_KEYS.USER, userData);
-};
-
-/**
- * Get current logged in user
- * @returns {object|null}
- */
-export const getUser = () => {
-  return getItem(STORAGE_KEYS.USER) || {};
-};
-
-/**
- * Remove current logged in user (logout)
- */
-export const clearUser = () => {
-  removeItem(STORAGE_KEYS.USER);
-};
-
-/**
- * Save registered user details
- * @param {object} data
- */
-export const saveRegisteredUser = (data) => {
-  setItem(STORAGE_KEYS.REGISTERED_USER, data);
-};
-
-/**
- * Get registered user
- * @returns {object|null}
- */
-export const getRegisteredUser = () => {
-  return getItem(STORAGE_KEYS.REGISTERED_USER) || {};
-};
-
-/* ===========================
-   Delivery Management
-=========================== */
-
-/**
- * Save delivery data (array of deliveries)
- * @param {Array} deliveries
- */
-export const saveDeliveries = (deliveries) => {
-  setItem(STORAGE_KEYS.DELIVERIES, deliveries);
-};
-
-/**
- * Get all deliveries
- * @returns {Array}
- */
-export const getDeliveries = () => {
-  return getItem(STORAGE_KEYS.DELIVERIES) || [];
-};
-
-/**
- * Update a single delivery by ID
- * @param {number|string} id
- * @param {object} data
- */
-export const updateDelivery = (id, data) => {
-  const deliveries = getDeliveries();
-  const updated = deliveries.map((d) => (d.id === id ? { ...d, ...data } : d));
-  saveDeliveries(updated);
-};
-
-/**
- * Mark a delivery as delivered
- * @param {number|string} id
- */
-export const markDelivered = (id) => {
-  const deliveries = getDeliveries();
-  const updated = deliveries.map((d) =>
-    d.id === id ? { ...d, delivered: true } : d
-  );
-  saveDeliveries(updated);
-};
-
-/**
- * Get all delivered deliveries
- * @returns {Array}
- */
-export const getDelivered = () => {
-  const deliveries = getDeliveries();
-  return deliveries.filter((d) => d.delivered);
+  try {
+    localStorage.setItem("userPreferences", JSON.stringify(userData));
+  } catch (error) {
+    console.error("Error saving user preferences:", error);
+  }
 };
