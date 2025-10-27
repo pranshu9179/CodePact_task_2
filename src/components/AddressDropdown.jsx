@@ -57,11 +57,10 @@ export default function AddressDropdown({ onSelect }) {
       <Button
         type="button"
         onClick={handleConfirm}
-        className="w-full mt-2 bg-linear-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white rounded-xl h-9 text-sm font-medium transition-all duration-300"
+        className="w-full mt-2 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white rounded-xl h-9 text-sm font-medium transition-all duration-300"
       >
         Save Address
       </Button>
     </div>
   );
 }
-  

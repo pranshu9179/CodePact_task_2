@@ -1,6 +1,9 @@
 // src/layout/UserList.jsx
+import { useNavigate } from "react-router-dom";
 
-export default function UserList({ users = [], onBack, onOpenUser }) {
+export default function UserList({ users = [], onBack }) {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-3 pb-20">
       <div className="flex items-center justify-between">
@@ -28,7 +31,7 @@ export default function UserList({ users = [], onBack, onOpenUser }) {
           </div>
           <div className="flex flex-col items-end gap-2">
             <button
-              onClick={() => onOpenUser(u)}
+              onClick={() => navigate(`/delivery-dashboard/user/${u.id}`)}
               className="px-3 py-2 bg-emerald-500 text-white rounded-xl text-sm shadow hover:brightness-95"
             >
               Details

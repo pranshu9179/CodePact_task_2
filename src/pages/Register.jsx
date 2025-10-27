@@ -22,7 +22,9 @@ export default function Register() {
     e.preventDefault();
 
     // Get all registered users from localStorage
-    const allUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    const allUsers = JSON.parse(
+      localStorage.getItem("registeredUsers") || "[]"
+    );
 
     // Add new user
     allUsers.push(userData);
@@ -35,7 +37,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-sky-100 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-100 to-white px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white shadow-xl rounded-3xl p-8 space-y-4 animate-fadeIn"
@@ -49,9 +51,7 @@ export default function Register() {
           <label className="block text-gray-600 mb-1">Register As</label>
           <select
             value={userData.role}
-            onChange={(e) =>
-              setUserData({ ...userData, role: e.target.value })
-            }
+            onChange={(e) => setUserData({ ...userData, role: e.target.value })}
             className="w-full border border-sky-200 rounded-lg h-10 px-3 focus:ring-2 focus:ring-sky-300 transition"
           >
             <option value="user">User</option>
@@ -72,9 +72,7 @@ export default function Register() {
           type="number"
           placeholder="Mobile Number"
           value={userData.mobile}
-          onChange={(e) =>
-            setUserData({ ...userData, mobile: e.target.value })
-          }
+          onChange={(e) => setUserData({ ...userData, mobile: e.target.value })}
           className="w-full border border-sky-200 rounded-lg h-10 px-3 focus:ring-2 focus:ring-sky-300 transition"
           required
         />
@@ -83,9 +81,7 @@ export default function Register() {
           type="email"
           placeholder="Email"
           value={userData.email}
-          onChange={(e) =>
-            setUserData({ ...userData, email: e.target.value })
-          }
+          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
           className="w-full border border-sky-200 rounded-lg h-10 px-3 focus:ring-2 focus:ring-sky-300 transition"
           required
         />
@@ -136,7 +132,7 @@ export default function Register() {
           </>
         )}
 
-        <button className="w-full bg-linear-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-300 ">
+        <button className="w-full bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-300 ">
           Register
         </button>
 

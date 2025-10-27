@@ -1,5 +1,4 @@
 // src/layout/AreaList.jsx
-import React from "react";
 
 export default function AreaList({ areas = [], onSelectArea }) {
   return (

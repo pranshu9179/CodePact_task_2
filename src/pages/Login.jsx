@@ -22,7 +22,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-sky-100 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-100 to-white px-4">
       <div className="bg-white p-6 rounded-3xl shadow-xl w-full max-w-sm space-y-4 animate-fadeIn">
         <h2 className="text-center text-2xl font-bold text-sky-700">Login</h2>
 
@@ -30,7 +30,7 @@ export default function Login() {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           className="border border-sky-200 rounded-lg px-3 h-10 focus:ring-2 focus:ring-sky-300 transition"
         />
 
@@ -39,7 +39,7 @@ export default function Login() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className="border border-sky-200 rounded-lg px-3 h-10 focus:ring-2 focus:ring-sky-300 transition"
           />
           <span
@@ -52,7 +52,7 @@ export default function Login() {
 
         <Button
           onClick={handleLogin}
-          className="w-full bg-linear-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-300"
+          className="w-full bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-300"
         >
           Login
         </Button>

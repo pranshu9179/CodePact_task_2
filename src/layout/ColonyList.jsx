@@ -35,3 +35,4 @@ export default function ColonyList({ colonies = [], onBack, onSelectColony }) {
     </div>
   );
 }
+

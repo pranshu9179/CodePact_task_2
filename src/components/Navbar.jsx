@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between bg-linear-to-r from-sky-400 to-sky-300 px-4 py-3 shadow-md rounded-b-2xl sticky top-0 z-50">
+    <nav className="flex items-center justify-between bg-gradient-to-r from-sky-400 to-sky-300 px-4 py-3 shadow-md rounded-b-2xl sticky top-0 z-50">
       {/* Logo Section */}
       <div className="flex items-center gap-2">
         <img src="/logo.svg" alt="MilkEase" className="w-7 h-7" />

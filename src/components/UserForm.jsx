@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectItem, SelectContent, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,8 +31,12 @@ export default function UserForm() {
     <div className="flex justify-center p-4">
       <Card className="w-full max-w-md rounded-2xl shadow-sm">
         <CardHeader className="pb-2 text-center">
-          <h2 className="text-lg font-semibold text-sky-700">Milk Preferences 🥛</h2>
-          <p className="text-xs text-gray-500">Set your daily milk requirements.</p>
+          <h2 className="text-lg font-semibold text-sky-700">
+            Milk Preferences 🥛
+          </h2>
+          <p className="text-xs text-gray-500">
+            Set your daily milk requirements.
+          </p>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -54,7 +64,7 @@ export default function UserForm() {
           </div>
           <Button
             onClick={handleSubmit}
-            className="w-full h-10 text-sm font-medium text-white rounded-xl bg-linear-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 transition-all duration-300"
+            className="w-full h-10 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 transition-all duration-300"
           >
             Save Preferences
           </Button>
