@@ -131,7 +131,7 @@ export default function UserDetailsPage() {
             onClick={() => navigate(-1)}
             className="px-3 py-1 rounded-lg font-medium bg-gray-200 text-sm hover:bg-gray-400 transition"
           >
-            Back
+            ← Back
           </button>
         </div>
 

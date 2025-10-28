@@ -14,7 +14,7 @@ export default function AreaList({ areas = [], onSelectArea }) {
           </div>
           <button
             onClick={() => onSelectArea(area)}
-            className="px-3 py-2 bg-sky-500 text-white rounded-xl text-sm shadow hover:brightness-95"
+            className="px-3 py-2 bg-sky-500 text-white rounded-xl text-sm font-medium shadow hover:brightness-95"
           >
             View Colonies
           </button>

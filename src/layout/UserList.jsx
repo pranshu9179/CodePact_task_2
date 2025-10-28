@@ -9,11 +9,11 @@ export default function UserList({ users = [], onBack }) {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="px-3 py-2 rounded-lg bg-white shadow text-sm"
+          className="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-400 font-medium  shadow text-sm"
         >
           ← Back
         </button>
-        <p className="text-sm text-gray-600">Customers</p>
+        <p className="text-sm font-bold text-gray-800">Customers</p>
         <div className="w-10" />
       </div>
 
@@ -32,7 +32,7 @@ export default function UserList({ users = [], onBack }) {
           <div className="flex flex-col items-end gap-2">
             <button
               onClick={() => navigate(`/delivery-dashboard/user/${u.id}`)}
-              className="px-3 py-2 bg-emerald-500 text-white rounded-xl text-sm shadow hover:brightness-95"
+              className="px-3 py-2 bg-emerald-500 font-medium text-white rounded-xl text-sm shadow hover:brightness-95"
             >
               Details
             </button>

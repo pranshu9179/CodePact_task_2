@@ -7,11 +7,11 @@ export default function ColonyList({ colonies = [], onBack, onSelectColony }) {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="px-3 py-2 rounded-lg bg-white shadow text-sm"
+          className="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-400 font-medium shadow text-md "
         >
           ← Back
         </button>
-        <p className="text-sm text-gray-600">Colonies</p>
+        <p className="text-sm font-bold text-gray-800">Colonies</p>
         <div className="w-10" /> {/* spacer */}
       </div>
 
@@ -26,7 +26,7 @@ export default function ColonyList({ colonies = [], onBack, onSelectColony }) {
           </div>
           <button
             onClick={() => onSelectColony(c)}
-            className="px-3 py-2 bg-sky-500 text-white rounded-xl text-sm shadow hover:brightness-95"
+            className="px-3 py-2 bg-sky-500 text-white font-medium rounded-xl text-sm shadow hover:brightness-95"
           >
             View Users
           </button>

@@ -31,6 +31,19 @@ export default function UserDashboard() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDayDetails, setSelectedDayDetails] = useState(null);
 
+  // ✅ Helper function for consistent date formatting (handles timezone)
+  const formatDate = (value) => {
+    if (!value) return "";
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return "";
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
   // Load user preferences on mount
   useEffect(() => {
     const savedPrefs = getUser();
@@ -45,7 +58,7 @@ export default function UserDashboard() {
       address: savedPrefs?.address || "N/A",
       milkType: savedPrefs?.milkType || "cow",
       qty: savedPrefs?.quantity || 1,
-      lastMonthTotal: savedPrefs?.lastMonthTotal || 0,
+      lastMonthTotal: savedPrefs?.lastMonthTotal || 2700,
       due: savedPrefs?.due || 0,
       deliveryLog: savedPrefs?.deliveryLog || {},
       phone: savedPrefs?.phone || "N/A",
@@ -82,16 +95,23 @@ export default function UserDashboard() {
     });
   };
 
-  // Generate monthly day list
+  // ✅ Generate monthly day list (till current actual date, accurate to IST)
   const generateMonthDays = () => {
     const now = new Date(selectedDate);
     const year = now.getFullYear();
     const month = now.getMonth();
+    const today = new Date(); // ✅ Fixed here
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
     const list = [];
-    for (let i = 1; i <= daysInMonth; i++) {
-      const d = new Date(year, month, i);
-      const dateStr = d.toISOString().slice(0, 10);
+    const endDay =
+      today.getMonth() === month && today.getFullYear() === year
+        ? today.getDate()
+        : daysInMonth;
+
+    for (let i = 1; i <= endDay; i++) {
+      const d = new Date(year, month, i); // ✅ Fixed argument order
+      const dateStr = formatDate(d);
       const delivered = !!userData?.deliveryLog?.[dateStr];
       const type = userData?.milkType || "cow";
       const qty = userData?.qty || 1;
@@ -116,7 +136,9 @@ export default function UserDashboard() {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-64 backdrop-blur-lg bg-white/80 shadow-2xl p-6 flex flex-col items-center md:items-start gap-4 border-r border-sky-100 transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
         <button
           className="absolute top-4 right-4 md:hidden text-gray-600 text-2xl font-bold"
@@ -186,9 +208,7 @@ export default function UserDashboard() {
           </Card>
 
           <Card className="p-5 bg-gradient-to-br from-red-50 to-white border-red-100 shadow hover:shadow-md transition-all">
-            <h3 className="text-red-600 font-semibold text-sm">
-              Due Amount
-            </h3>
+            <h3 className="text-red-600 font-semibold text-sm">Due Amount</h3>
             <p className="text-2xl font-bold text-red-700 mt-2">
               ₹{userData.due}
             </p>
@@ -236,7 +256,9 @@ export default function UserDashboard() {
                           }`}
                         >
                           <td className="px-3 py-2">{day.date}</td>
-                          <td className="px-3 py-2 text-center capitalize">{day.type}</td>
+                          <td className="px-3 py-2 text-center capitalize">
+                            {day.type}
+                          </td>
                           <td className="px-3 py-2 text-center">{day.qty}</td>
                           <td className="px-3 py-2 text-center">{day.price}</td>
                           <td className="px-3 py-2 text-center">
@@ -252,7 +274,10 @@ export default function UserDashboard() {
                     </tbody>
                     <tfoot className="bg-sky-50 font-semibold text-sky-700">
                       <tr>
-                        <td colSpan="3" className="px-3 py-2 text-right font-bold">
+                        <td
+                          colSpan="3"
+                          className="px-3 py-2 text-right font-bold"
+                        >
                           Total:
                         </td>
                         <td className="px-3 py-2 text-center font-bold">
